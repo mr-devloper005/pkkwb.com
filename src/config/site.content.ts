@@ -2,68 +2,67 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'SBM , Profile platform',
+    tagline: 'Profiles & social bookmarking',
   },
   footer: {
-    tagline: 'SBM , Profile platform',
+    tagline: 'Profiles & social bookmarking',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
-    description: 'A SBM , Profile site for Pkkwb, built for clean discovery and structured publishing.',
+    badge: 'Profiles & shared shelves',
+    title: ['A thoughtful home for', 'people and the links they trust.'],
+    description: 'Public profiles, named bookmark collections, and a calmer way to return to the resources you care about.',
     primaryCta: {
-      label: 'Explore resources',
+      label: 'Open bookmarking',
       href: '/sbm',
     },
     secondaryCta: {
       label: 'View profiles',
       href: '/profile',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    searchPlaceholder: 'Search profiles, collections, and saved resources',
     focusLabel: 'Focus',
-    featureCardBadge: 'latest cover rotation',
-    featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
+    featureCardBadge: 'Community shelf',
+    featureCardTitle: 'New collections and profiles keep the homepage feeling fresh.',
     featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+      'The latest public shelves and people stay visible here without turning the page into a generic feed.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
-      description: 'A SBM , Profile site for Pkkwb, built for clean discovery and structured publishing.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+      title: 'Profiles and social bookmarking',
+      description: 'A profiles and social bookmarking site: public pages, shared collections, and the links you need—without a noisy feed.',
+      openGraphTitle: 'Profiles and social bookmarking',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Build your public profile, save the web, and follow others through shelves and link collections.',
+      keywords: ['profiles', 'social bookmarking', 'link collections', 'public profile', 'saved links'],
     },
     introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introTitle: 'A calmer home for your identity and the links you trust.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'We focus on two surfaces: a profile that tells your story, and social bookmarking that keeps research and inspiration organized.',
+      'The experience stays readable—fewer ad-like blocks, more clarity when you return to a saved shelf or someone’s public page.',
+      'Whether you are sharing work-in-progress research or a polished public bio, the platform keeps the emphasis on people and useful links.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Profile pages with avatars, bios, and clear outbound links.',
+      'Named bookmark collections you can share as public boards.',
+      'A lighter, long-scroll homepage you can actually scan in one pass.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'Browse bookmarking',
+      href: '/sbm',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'See profiles',
+      href: '/profile',
     },
   },
   cta: {
     badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
-    description: 'A SBM , Profile site for Pkkwb, built for clean discovery and structured publishing.',
+    title: 'Profiles and link collections, designed to feel as calm as a well-run studio site.',
+    description: 'A profiles and social bookmarking site, built for clean identity surfaces and shareable saved links.',
     primaryCta: {
-      label: 'Explore resources',
+      label: 'Open bookmarks',
       href: '/sbm',
     },
     secondaryCta: {

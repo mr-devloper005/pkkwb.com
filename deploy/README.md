@@ -1,5 +1,12 @@
 # LinkRiseUp VPS Deployment
 
+## Screenshots
+
+- [Screenshot 1](https://prnt.sc/UlwmdmBTRTR_)
+- [Screenshot 2](https://prnt.sc/2LBq3P55y7M4)
+- [Screenshot 3](https://prnt.sc/NAbyMhJ241x2)
+- [Screenshot 4](https://prnt.sc/liGroaeeXqNp)
+
 ## Files
 - `Dockerfile` - production multi-stage image
 - `docker-compose.vps.yml` - service definition for VPS

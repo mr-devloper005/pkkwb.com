@@ -3,21 +3,22 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Nexuz-inspired shell: white base, deep charcoal green primary, soft mint accent */
 :root {
-  --background: oklch(0.985 0.006 84);
-  --foreground: oklch(0.23 0.03 20);
-  --card: oklch(0.992 0.004 84 / 0.96);
-  --card-foreground: oklch(0.23 0.03 20);
-  --popover: oklch(0.992 0.004 84 / 0.98);
-  --popover-foreground: oklch(0.23 0.03 20);
-  --primary: oklch(0.41 0.15 10);
-  --primary-foreground: oklch(0.99 0.005 84);
-  --secondary: oklch(0.95 0.02 85);
-  --secondary-foreground: oklch(0.3 0.04 20);
-  --muted: oklch(0.955 0.012 85);
-  --muted-foreground: oklch(0.47 0.04 28);
-  --accent: oklch(0.76 0.1 155);
-  --accent-foreground: oklch(0.18 0.03 20);
+  --background: oklch(0.99 0.01 95);
+  --foreground: oklch(0.2 0.04 180);
+  --card: oklch(0.999 0.002 100 / 0.98);
+  --card-foreground: oklch(0.2 0.04 180);
+  --popover: oklch(0.999 0.002 100 / 0.98);
+  --popover-foreground: oklch(0.2 0.04 180);
+  --primary: oklch(0.28 0.07 195);
+  --primary-foreground: oklch(0.99 0.01 100);
+  --secondary: oklch(0.95 0.04 160);
+  --secondary-foreground: oklch(0.2 0.04 180);
+  --muted: oklch(0.95 0.02 100);
+  --muted-foreground: oklch(0.45 0.04 150);
+  --accent: oklch(0.9 0.04 160);
+  --accent-foreground: oklch(0.2 0.04 180);
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0.005 84);
   --border: oklch(0.88 0.02 70);
