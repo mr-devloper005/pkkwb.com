@@ -1,59 +1,18 @@
-import Link from 'next/link'
-import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
+import { Bookmark, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { LOGIN_PAGE_OVERRIDE_ENABLED, LoginPageOverride } from '@/overrides/login-page'
+import { LoginForm, LoginFormLinks } from '@/components/auth/login-form'
+import { SITE_CONFIG } from '@/lib/site-config'
 
-function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
-  if (kind === 'directory') {
-    return {
-      shell: 'bg-[#f8fbff] text-slate-950',
-      panel: 'border border-slate-200 bg-white',
-      side: 'border border-slate-200 bg-slate-50',
-      muted: 'text-slate-600',
-      action: 'bg-slate-950 text-white hover:bg-slate-800',
-      icon: Building2,
-      title: 'Access your business dashboard',
-      body: 'Manage listings, verification details, contact info, and local discovery surfaces from one place.',
-    }
-  }
-  if (kind === 'editorial') {
-    return {
-      shell: 'bg-[#fbf6ee] text-[#241711]',
-      panel: 'border border-[#dcc8b7] bg-[#fffdfa]',
-      side: 'border border-[#e6d6c8] bg-[#fff4e8]',
-      muted: 'text-[#6e5547]',
-      action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
-      icon: FileText,
-      title: 'Sign in to your publication workspace',
-      body: 'Draft, review, and publish long-form work with the calmer reading system intact.',
-    }
-  }
-  if (kind === 'visual') {
-    return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      side: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
-      icon: ImageIcon,
-      title: 'Enter the creator workspace',
-      body: 'Open your visual feed, creator profile, and publishing tools without dropping into a generic admin shell.',
-    }
-  }
-  return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4]',
-    side: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
-    icon: Bookmark,
-    title: 'Open your curated collections',
-    body: 'Manage saved resources, collection notes, and curator identity from a calmer workspace.',
-  }
-}
+const nexuz = {
+  shell: 'min-h-screen bg-white text-[#1a2825]',
+  side: 'rounded-3xl border border-[#c8e8dc] bg-[#e8f8f0] p-8',
+  panel: 'rounded-3xl border border-[#d4e5df] bg-white p-8 shadow-sm',
+  muted: 'text-[#3d5a50]',
+} as const
 
 export default function LoginPage() {
   if (LOGIN_PAGE_OVERRIDE_ENABLED) {
@@ -62,39 +21,39 @@ export default function LoginPage() {
 
   const { recipe } = getFactoryState()
   const productKind = getProductKind(recipe)
-  const config = getLoginConfig(productKind)
-  const Icon = config.icon
+  const isCuration = productKind === 'curation'
 
   return (
-    <div className={`min-h-screen ${config.shell}`}>
+    <div className={nexuz.shell}>
       <NavbarShell />
-      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-stretch">
-          <div className={`rounded-[2rem] p-8 ${config.side}`}>
-            <Icon className="h-8 w-8" />
-            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em]">{config.title}</h1>
-            <p className={`mt-5 text-sm leading-8 ${config.muted}`}>{config.body}</p>
-            <div className="mt-8 grid gap-4">
-              {['Cleaner product-specific workflows', 'Palette and layout matched to the site family', 'Fewer repeated admin patterns'].map((item) => (
-                <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">{item}</div>
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <section className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
+          <div className={nexuz.side}>
+            <Bookmark className="h-8 w-8 text-[#1a3531]" />
+            <h1 className="mt-5 text-3xl font-bold tracking-[-0.04em] text-[#122520] sm:text-4xl">
+              {isCuration ? 'Welcome back to your profile and saved links' : 'Sign in to your workspace'}
+            </h1>
+            <p className={`mt-5 text-sm leading-8 ${nexuz.muted}`}>
+              {isCuration
+                ? `Access ${SITE_CONFIG.name} with a session stored in this browser—your bookmarks and profile stay at hand.`
+                : 'Pick up where you left off. Your account preferences apply across the app.'}
+            </p>
+            <div className="mt-8 grid gap-3 text-sm text-[#2d3f39]">
+              {['One account for your public profile and collections', 'Lightweight, readable layouts', 'Data cached locally in your browser for faster return visits'].map((t) => (
+                <div key={t} className="rounded-2xl border border-[#1a3531]/10 bg-white/60 px-4 py-3.5">
+                  {t}
+                </div>
               ))}
             </div>
           </div>
-
-          <div className={`rounded-[2rem] p-8 ${config.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Welcome back</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Sign in</button>
-            </form>
-            <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
-              <Link href="/forgot-password" className="hover:underline">Forgot password?</Link>
-              <Link href="/register" className="inline-flex items-center gap-2 font-semibold hover:underline">
-                <Sparkles className="h-4 w-4" />
-                Create account
-              </Link>
-            </div>
+          <div className={nexuz.panel}>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#1a3531]">Sign in</p>
+            <LoginForm />
+            <LoginFormLinks mutedClass={nexuz.muted} />
+            <p className={`mt-4 flex items-center gap-2 text-xs ${nexuz.muted}`}>
+              <Sparkles className="h-3.5 w-3.5" />
+              Successful sign-in saves your user to local storage in this browser.
+            </p>
           </div>
         </section>
       </main>

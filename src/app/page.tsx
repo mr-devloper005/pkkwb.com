@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Bookmark, Building2, Compass, FileText, Globe2, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Tag, User } from 'lucide-react'
+import { ArrowRight, Bookmark, Building2, CheckCircle2, Compass, FileText, Image as ImageIcon, LayoutGrid, Layers, MapPin, RefreshCw, ShieldCheck, Sparkles, Star, Tag, User } from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
@@ -127,14 +127,18 @@ function getVisualTone() {
 
 function getCurationTone() {
   return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4] shadow-[0_24px_60px_rgba(91,56,37,0.08)]',
-    soft: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    title: 'text-[#261811]',
-    badge: 'bg-[#5b2b3b] text-[#fff0f5]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
-    actionAlt: 'border border-[#ddcdbd] bg-transparent text-[#261811] hover:bg-[#efe3d6]',
+    shell: 'bg-white text-[#1a2825]',
+    panel: 'border border-[#c8e8dc] bg-white shadow-[0_20px_48px_rgba(26,53,49,0.08)]',
+    soft: 'border border-[#d4efe6] bg-[#e8f8f0]',
+    softInv: 'border border-[#1a3531] bg-[#1a3531] text-white shadow-[0_20px_48px_rgba(15,35,32,0.2)]',
+    quote: 'bg-[#edeaf5]',
+    cta: 'bg-[#c5efe2]',
+    mint: 'bg-[#c8f0e4]',
+    muted: 'text-[#3d5a50]',
+    title: 'text-[#122520]',
+    badge: 'inline-flex border border-[#1a3531] bg-white text-[#1a3531]',
+    action: 'bg-[#1a3531] text-white hover:bg-[#0f2320]',
+    actionAlt: 'border-2 border-[#1a3531] bg-white text-[#1a3531] hover:bg-[#c8f0e4]',
   }
 }
 
@@ -409,62 +413,323 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
   )
 }
 
-function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }: { primaryTask?: EnabledTask; bookmarkPosts: SitePost[]; profilePosts: SitePost[]; articlePosts: SitePost[] }) {
+function CurationHome({ primaryTask, bookmarkPosts, profilePosts }: { primaryTask?: EnabledTask; bookmarkPosts: SitePost[]; profilePosts: SitePost[] }) {
   const tone = getCurationTone()
-  const collections = bookmarkPosts.length ? bookmarkPosts.slice(0, 4) : articlePosts.slice(0, 4)
-  const people = profilePosts.slice(0, 3)
+  const primaryRoute = primaryTask?.route || '/sbm'
+  const featuredBookmarks = bookmarkPosts.slice(0, 4)
+  const hero = profilePosts[0] || bookmarkPosts[0]
+  const detailSide = profilePosts[1] || profilePosts[0] || bookmarkPosts[0]
+  const profileStat = Math.max(120, profilePosts.length * 8 + 420)
+  const linkStat = Math.max(2000, bookmarkPosts.length * 12 + 1800)
+  const colStat = Math.max(15, profilePosts.length + bookmarkPosts.length + 12)
+  const partners = ['Apex', 'Northwind', 'Brightly', 'Vertex', 'Harborline']
+
+  type GridItem = { name: string; handle: string; blurb: string; image: string; href: string; stars: number }
+  const built: GridItem[] = [
+    ...profilePosts.slice(0, 3).map((p) => ({
+      name: p.title,
+      handle: `@${p.slug}`.replace(/\.+/g, ''),
+      blurb: p.summary || 'A polished public profile with clear identity and link-outs.',
+      image: getPostImage(p),
+      href: getTaskHref('profile', p.slug),
+      stars: 5,
+    })),
+    ...bookmarkPosts.slice(0, 3).map((p) => ({
+      name: p.title,
+      handle: `/${p.slug}`,
+      blurb: p.summary || 'A curated set of resources worth revisiting and sharing.',
+      image: getPostImage(p),
+      href: getTaskHref('sbm', p.slug),
+      stars: 5,
+    })),
+  ]
+  const demoFill: GridItem[] = [
+    { name: 'Avery Chen', handle: '@avery', blurb: 'Saves the best product reads in one public shelf.', image: '/placeholder.svg?height=200&width=200', href: '/profile', stars: 5 },
+    { name: 'Design systems hub', handle: '/design-links', blurb: 'A bookmark board for tokens, a11y, and UI kits.', image: '/placeholder.svg?height=200&width=200', href: '/sbm', stars: 4 },
+  ]
+  const communityGrid: GridItem[] = built.length >= 6 ? built.slice(0, 6) : [...built, ...demoFill].slice(0, 6)
 
   return (
     <main className={tone.shell}>
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
-          <div>
-            <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${tone.badge}`}>
-              <Bookmark className="h-3.5 w-3.5" />
-              Curated collections
-            </span>
-            <h1 className={`mt-6 max-w-4xl text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${tone.title}`}>
-              Save, organize, and revisit resources through shelves, boards, and curated collections.
-            </h1>
-            <p className={`mt-6 max-w-2xl text-base leading-8 ${tone.muted}`}>{SITE_CONFIG.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={primaryTask?.route || '/sbm'} className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>
-                Open collections
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.actionAlt}`}>
-                Explore curators
-              </Link>
+      {/* Hero */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
+            <div>
+              <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] ${tone.badge}`}>
+                <Sparkles className="h-3.5 w-3.5" />
+                Public profiles + shared bookmarks
+              </span>
+              <h1 className={`mt-5 max-w-2xl text-4xl font-bold tracking-[-0.04em] sm:text-5xl lg:text-6xl ${tone.title}`}>
+                Build your identity and save the web, without the noise of a generic feed.
+              </h1>
+              <p className={`mt-5 max-w-xl text-base leading-7 sm:text-lg ${tone.muted}`}>
+                {SITE_CONFIG.description} Follow people, open their shelves, and keep the links you care about in one place.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link href={primaryRoute} className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold shadow-sm ${tone.action}`}>
+                  {primaryTask?.label || 'Start bookmarking'}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold ${tone.actionAlt}`}>
+                  View profiles
+                </Link>
+              </div>
+            </div>
+            <div className="relative min-h-[280px] sm:min-h-[360px]">
+              <div className="absolute inset-0 rounded-3xl border border-[#b8e5d4] bg-[#c5efe2] p-3 shadow-inner sm:p-4" />
+              <div className="relative h-full min-h-[280px] overflow-hidden rounded-2xl sm:min-h-[360px]">
+                <ContentImage
+                  src={getPostImage(hero)}
+                  alt="Community member or bookmark preview"
+                  fill
+                  className="object-cover object-top"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {collections.map((post) => (
-              <Link key={post.id} href={getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Collection</p>
-                <h3 className="mt-3 text-2xl font-semibold">{post.title}</h3>
-                <p className={`mt-3 text-sm leading-8 ${tone.muted}`}>{post.summary || 'A calmer bookmark surface with room for context and grouping.'}</p>
+          <div className="mt-14 border-t border-[#e8f2ed] pt-8">
+            <p className="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-[#4a6b60]">Trusted by teams and creators</p>
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 opacity-40 grayscale sm:gap-x-14">
+              {partners.map((name) => (
+                <span key={name} className="text-sm font-bold tracking-tight sm:text-base">{name}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quote */}
+      <section className={tone.quote}>
+        <p className="mx-auto max-w-3xl px-6 py-16 text-center text-lg italic leading-8 text-[#2d3250] sm:text-2xl sm:leading-9">
+          &ldquo;{SITE_CONFIG.name} is where your profile and your saved links feel like one calm workspace—not another endless scroll.&rdquo;
+        </p>
+      </section>
+
+      {/* 3 feature cards — middle highlights */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold tracking-[-0.04em] text-[#122520] sm:text-4xl">Everything you need for social bookmarking</h2>
+            <p className="mt-3 text-[#3d5a50]">Profiles, collections, and public shelves built for how people really save and share the web today.</p>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {[
+              {
+                k: 'bookmarks' as const,
+                title: 'Link shelves',
+                text: 'Group resources by project, team, or topic. Share a shelf as a public board.',
+                inv: false,
+                Icon: Bookmark,
+              },
+              {
+                k: 'profiles' as const,
+                title: 'Profile-first',
+                text: 'A single page for who you are and what you read—avatars, bio, and outbound links.',
+                inv: true,
+                Icon: User,
+              },
+              {
+                k: 'sync' as const,
+                title: 'Revisit, don’t re-search',
+                text: 'Faster return visits with collections that stay legible in light or dark UIs.',
+                inv: false,
+                Icon: Layers,
+              },
+            ].map((card) => {
+              const Icon = card.Icon
+              return (
+                <div
+                  key={card.k}
+                  className={`relative flex flex-col rounded-2xl p-7 min-h-[220px] ${
+                    card.inv ? 'border border-[#1a3531] bg-[#1a3531] text-white' : 'border border-[#d4efe6] bg-[#e8f8f0]'
+                  }`}
+                >
+                  <Icon
+                    className={`absolute right-5 top-5 h-5 w-5 ${
+                      card.inv ? 'text-white/50' : 'text-[#1a3531]/50'
+                    }`}
+                  />
+                  <h3 className={`pr-8 text-xl font-bold ${card.inv ? 'text-white' : 'text-[#122520]'}`}>
+                    {card.title}
+                  </h3>
+                  <p
+                    className={`mt-3 text-sm leading-7 ${
+                      card.inv ? 'text-white/80' : 'text-[#3d5a50]'
+                    }`}
+                  >
+                    {card.text}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Split: image + checklist */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-12">
+          <div className="grid gap-8 lg:grid-cols-2 lg:items-stretch">
+            <div className="relative min-h-[320px] overflow-hidden rounded-2xl border border-[#c8e8dc]">
+              <ContentImage
+                src={getPostImage(detailSide)}
+                alt="Product visual"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="flex flex-col justify-center rounded-2xl border border-[#e0ebe6] bg-[#f3faf7] p-8 lg:p-10">
+              <h2 className="text-2xl font-bold tracking-[-0.04em] text-[#122520] sm:text-3xl">Why people stay on {SITE_CONFIG.name}</h2>
+              <p className="mt-3 text-sm leading-7 text-[#3d5a50]">
+                Curated for clarity: fewer ad-like surfaces, more readable lists and public profiles. Perfect for students, product teams, and research-heavy roles.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {['Public profile page with your story and best links out', 'Bookmark collections you can name, describe, and share', 'A calmer home screen focused on people and resources'].map(
+                  (line) => (
+                    <li key={line} className="flex gap-3 text-sm text-[#1a2825]">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#1a3531]" />
+                      {line}
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Progress + stat bars */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 pb-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-2xl border border-[#d4efe6] bg-[#f3faf7] p-6 sm:p-8">
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-[#1a3531]">What members complete first</h3>
+              {[
+                { label: 'Profile fields', p: 88, color: 'w-[88%]' },
+                { label: 'First bookmark collection', p: 76, color: 'w-[76%]' },
+                { label: 'Public shelf shared', p: 64, color: 'w-[64%]' },
+              ].map((row) => (
+                <div key={row.label} className="mt-5 first:mt-4">
+                  <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-[#3d5a50]">
+                    <span>{row.label}</span>
+                    <span className="text-[#1a3531]">{row.p}%</span>
+                  </div>
+                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#d0ebe2]">
+                    <div className={`h-2.5 rounded-full bg-[#1a3531] ${row.color}`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:items-stretch">
+              {[
+                { n: `${profileStat}+`, sub: 'Public profile views', icon: User },
+                { n: `${(linkStat / 1000).toFixed(1)}k+`, sub: 'Links added to collections', icon: Bookmark },
+                { n: `${colStat}+`, sub: 'Open collections to browse', icon: RefreshCw },
+              ].map((s) => {
+                const I = s.icon
+                return (
+                  <div
+                    key={s.sub}
+                    className="flex flex-col items-center justify-center rounded-2xl border border-[#c8e8dc] bg-white p-5 text-center shadow-sm"
+                  >
+                    <I className="h-5 w-5 text-[#1a3531]" />
+                    <p className="mt-3 text-2xl font-bold text-[#122520] sm:text-3xl">{s.n}</p>
+                    <p className="mt-1.5 text-xs text-[#3d5a50]">{s.sub}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bookmark / collection wall */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mb-6 flex items-end justify-between gap-3 border-b border-[#e8f2ed] pb-4">
+            <div>
+              <h2 className="text-2xl font-bold tracking-[-0.04em] text-[#122520]">Open collections and shelves</h2>
+              <p className="mt-1 text-sm text-[#3d5a50]">Hand-picked from our social bookmarking surface{featuredBookmarks.length ? '' : ' (demo copy when none are live yet)'}.</p>
+            </div>
+            <Link href="/sbm" className="text-sm font-semibold text-[#1a3531] hover:underline">See all</Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {(featuredBookmarks.length
+              ? featuredBookmarks
+              : [
+                  { id: 'd1', task: 'sbm', title: 'Research links', summary: 'Tools for reading, writing, and shipping with fewer tabs.', slug: 'research', content: null, media: [], tags: [] } as unknown as SitePost,
+                  { id: 'd2', task: 'sbm', title: 'Indie product stack', summary: 'A shelf of docs, changelogs, and communities worth following.', slug: 'indie', content: null, media: [], tags: [] } as unknown as SitePost,
+                  { id: 'd3', task: 'sbm', title: 'Open-source picks', summary: 'Libraries, CLIs, and design assets we keep coming back to.', slug: 'open-source', content: null, media: [], tags: [] } as unknown as SitePost,
+                  { id: 'd4', task: 'sbm', title: 'Career & learning', summary: 'Courses, talks, and references for leveling up in public.', slug: 'career', content: null, media: [], tags: [] } as unknown as SitePost,
+                ]).slice(0, 4)
+              .map((post) => (
+                <Link
+                  key={String(post.id)}
+                  href={getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug)}
+                  className="group rounded-2xl border border-[#d4efe6] bg-white p-6 transition hover:shadow-md"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a3531]">Collection</p>
+                  <h3 className="mt-2 text-xl font-bold text-[#122520] group-hover:underline">{post.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-[#3d5a50]">
+                    {post.summary || 'A shareable set of resources with short notes and tags.'}
+                  </p>
+                </Link>
+              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Community 3x2 grid */}
+      <section className="bg-[#f8fbf9]">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-[#122520] sm:text-3xl">From the community</h2>
+            <p className="mt-2 text-sm text-[#3d5a50]">Profile highlights and popular bookmark pages.</p>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {communityGrid.map((item) => (
+              <Link
+                key={`${item.href}-${item.handle}`}
+                href={item.href}
+                className="flex flex-col rounded-2xl border border-white bg-white p-5 shadow-sm transition hover:shadow-md"
+              >
+                <div className="mb-1 flex text-amber-500">
+                  {Array.from({ length: item.stars }, (_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-current" />
+                  ))}
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[#e8f2ed]">
+                    <ContentImage src={item.image} alt="" fill className="object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[#122520]">{item.name}</p>
+                    <p className="text-xs text-[#5a7a6f]">{item.handle}</p>
+                  </div>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-[#3d5a50] line-clamp-3">{item.blurb}</p>
               </Link>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Why this feels different</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">More like saved boards and reading shelves than a generic post feed.</h2>
-            <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>The structure is calmer, the cards are less noisy, and the page encourages collecting and returning instead of forcing everything into a fast-scrolling list.</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {people.map((post) => (
-              <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.8rem] p-5 ${tone.soft}`}>
-                <div className="relative h-32 overflow-hidden rounded-[1.2rem]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">{post.title}</h3>
-                <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>Curator profile, saved resources, and collection notes.</p>
+      {/* CTA band */}
+      <section className={tone.cta}>
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl rounded-3xl border border-[#7eb8a4]/40 bg-white/30 px-6 py-8 text-center backdrop-blur sm:px-10">
+            <h2 className="text-2xl font-bold text-[#0f2320] sm:text-3xl">Ready to publish your profile and your best links?</h2>
+            <p className="mt-2 text-sm text-[#1a3d36]">Sign in on any device—your session is remembered in this browser.</p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Link href="/register" className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-semibold ${tone.action}`}>
+                Get started
               </Link>
-            ))}
+              <Link href="/login" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#1a3531] bg-white/80 px-6 py-3 text-sm font-semibold text-[#0f2320] hover:bg-white">
+                Sign in
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -521,7 +786,7 @@ export default async function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-white text-foreground">
       <NavbarShell />
       <SchemaJsonLd data={schemaData} />
       {productKind === 'directory' ? (
@@ -541,7 +806,7 @@ export default async function HomePage() {
         <VisualHome primaryTask={primaryTask} imagePosts={imagePosts} profilePosts={profilePosts} articlePosts={articlePosts} />
       ) : null}
       {productKind === 'curation' ? (
-        <CurationHome primaryTask={primaryTask} bookmarkPosts={bookmarkPosts} profilePosts={profilePosts} articlePosts={articlePosts} />
+        <CurationHome primaryTask={primaryTask} bookmarkPosts={bookmarkPosts} profilePosts={profilePosts} />
       ) : null}
       <Footer />
     </div>
