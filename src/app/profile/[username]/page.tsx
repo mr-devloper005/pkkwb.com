@@ -3,13 +3,12 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/shared/footer";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { ContentImage } from "@/components/shared/content-image";
-import { TaskPostCard } from "@/components/shared/task-post-card";
 import { Button } from "@/components/ui/button";
 import { SchemaJsonLd } from "@/components/seo/schema-jsonld";
-import { buildPostUrl } from "@/lib/task-data";
 import { buildPostMetadata, buildTaskMetadata } from "@/lib/seo";
 import { fetchTaskPostBySlug, fetchTaskPosts } from "@/lib/task-data";
 import { SITE_CONFIG } from "@/lib/site-config";
+import { MapPin, UserPlus } from "lucide-react";
 
 export const revalidate = 3;
 
@@ -79,7 +78,7 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
     post.summary ||
     "Profile details will appear here once available.";
   const descriptionHtml = formatRichHtml(description);
-  const suggestedArticles = await fetchTaskPosts("article", 6);
+  const location = (content.location as string | undefined) || (content.address as string | undefined);
   const baseUrl = SITE_CONFIG.baseUrl.replace(/\/$/, "");
   const breadcrumbData = {
     "@context": "https://schema.org",
@@ -111,10 +110,13 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
       <NavbarShell />
       <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
         <SchemaJsonLd data={breadcrumbData} />
-        <section className="rounded-3xl border border-border/60 bg-white/90 p-8 shadow-sm md:p-12">
-          <div className="grid gap-8 md:grid-cols-[200px_1fr] md:items-start">
-            <div className="flex justify-center md:justify-start">
-              <div className="relative h-36 w-36 overflow-hidden rounded-full border border-border/70 bg-muted">
+
+        {/* Profile Header Card */}
+        <section className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start">
+            {/* Circular Logo */}
+            <div className="flex-shrink-0">
+              <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-border/40 bg-muted shadow-sm md:h-36 md:w-36">
                 {logoUrl ? (
                   <ContentImage src={logoUrl} alt={post.title} fill className="object-cover" sizes="144px" intrinsicWidth={144} intrinsicHeight={144} />
                 ) : (
@@ -124,68 +126,47 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
                 )}
               </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground sm:text-4xl">{brandName}</h1>
-              {domain ? (
-                <p className="mt-1 text-sm font-medium text-muted-foreground">{domain}</p>
-              ) : null}
+
+            {/* Profile Info */}
+            <div className="flex-1 min-w-0">
+              {/* Brand Name and Location */}
+              <div className="flex flex-col gap-1">
+                <h1 className="text-2xl font-bold text-foreground md:text-3xl">{brandName}</h1>
+                {location ? (
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span>{location}</span>
+                  </div>
+                ) : null}
+              </div>
+
+              {/* Description */}
               <article
-                className="article-content prose prose-slate mt-6 max-w-2xl text-base leading-relaxed prose-p:my-4 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
+                className="article-content prose prose-slate mt-4 max-w-2xl text-base leading-relaxed prose-p:my-3 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
                 dangerouslySetInnerHTML={{ __html: descriptionHtml }}
               />
-              {website ? (
-                <div className="mt-8">
-                  <Button asChild size="lg" className="px-7 text-base">
+
+              {/* Action Buttons */}
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <Button asChild variant="outline" size="sm" className="gap-1.5 px-5">
+                  <Link href="/login">
+                    <UserPlus className="h-4 w-4" />
+                    Follow
+                  </Link>
+                </Button>
+                {website ? (
+                  <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                     <Link href={website} target="_blank" rel="noopener noreferrer">
-                      Visit Official Site
+                      {domain}
                     </Link>
                   </Button>
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </div>
         </section>
 
-        {suggestedArticles.length ? (
-          <section className="mt-12">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-foreground">Suggested articles</h2>
-              <Link href="/articles" className="text-sm font-medium text-primary hover:underline">
-                View all
-              </Link>
-            </div>
-            <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {suggestedArticles.slice(0, 3).map((article) => (
-                <TaskPostCard
-                  key={article.id}
-                  post={article}
-                  href={buildPostUrl("article", article.slug)}
-                  compact
-                />
-              ))}
-            </div>
-            <nav className="mt-6 rounded-2xl border border-border bg-card/60 p-4">
-              <p className="text-sm font-semibold text-foreground">Related links</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                {suggestedArticles.slice(0, 3).map((article) => (
-                  <li key={`related-${article.id}`}>
-                    <Link
-                      href={buildPostUrl("article", article.slug)}
-                      className="text-primary underline-offset-4 hover:underline"
-                    >
-                      {article.title}
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <Link href="/profile" className="text-primary underline-offset-4 hover:underline">
-                    Browse all profiles
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </section>
-        ) : null}
+
       </main>
       <Footer />
     </div>
