@@ -163,22 +163,62 @@ export function TaskPostCard({
 
   if (isBookmarkVariant) {
     return (
-      <Link href={href} className={`group flex h-full flex-row items-start gap-4 overflow-hidden p-5 transition duration-300 ${visualVariant.frame}`}>
-        <div className="mt-1 rounded-full bg-white/10 p-2.5 text-current transition group-hover:scale-105">
-          <ExternalLink className="h-4 w-4" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${visualVariant.badge}`}>
-              <Tag className="h-3.5 w-3.5" />
-              {category}
-            </span>
-            {content.location ? <span className={`inline-flex items-center gap-1 text-xs ${visualVariant.muted}`}><MapPin className="h-3.5 w-3.5" />{content.location}</span> : null}
+      <Link href={href} className={`group relative flex h-full flex-col overflow-hidden transition-all duration-300 ${visualVariant.frame} hover:scale-[1.02]`}>
+        {/* Unique Top Border Accent */}
+        <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+        
+        <div className="flex flex-1 flex-col p-6">
+          {/* Header with Icon */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 p-2.5 transition-all group-hover:scale-110 group-hover:rotate-6">
+                  <ExternalLink className="h-5 w-5 text-blue-600" />
+                </div>
+                <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-400 rounded-full border-2 border-white"></div>
+              </div>
+              <div>
+                <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${visualVariant.badge}`}>
+                  <Tag className="h-3 w-3" />
+                  {category}
+                </span>
+              </div>
+            </div>
+            <div className="text-xs text-gray-400 font-medium">SBM</div>
           </div>
-          <h3 className={`mt-3 line-clamp-2 text-lg font-semibold leading-snug group-hover:opacity-85 ${visualVariant.title}`}>{post.title}</h3>
-          <p className={`mt-2 line-clamp-3 text-sm leading-7 ${visualVariant.muted}`}>{getExcerpt(content.description || post.summary, compact ? 120 : 180) || 'Explore this bookmark.'}</p>
-          {content.email ? <div className={`mt-3 inline-flex items-center gap-1 text-xs ${visualVariant.muted}`}><Mail className="h-3.5 w-3.5" />{content.email}</div> : null}
+
+          {/* Title with Unique Styling */}
+          <div className="mb-4">
+            <h3 className={`line-clamp-2 text-xl font-bold leading-tight ${visualVariant.title} group-hover:text-blue-600 transition-colors`}>
+              {post.title}
+            </h3>
+            <div className="mt-2 h-0.5 w-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+          </div>
+
+          {/* Description */}
+          <p className={`mb-4 line-clamp-3 text-sm leading-relaxed ${visualVariant.muted}`}>
+            {getExcerpt(content.description || post.summary, compact ? 100 : 140) || 'Explore this bookmark.'}
+          </p>
+
+          {/* Meta Information */}
+          <div className="mt-auto space-y-2">
+            {content.location && (
+              <div className={`inline-flex items-center gap-2 text-xs ${visualVariant.muted} bg-gray-50 px-3 py-1.5 rounded-lg`}>
+                <MapPin className="h-3.5 w-3.5" />
+                {content.location}
+              </div>
+            )}
+            {content.email && (
+              <div className={`inline-flex items-center gap-2 text-xs ${visualVariant.muted} bg-gray-50 px-3 py-1.5 rounded-lg`}>
+                <Mail className="h-3.5 w-3.5" />
+                {content.email}
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
       </Link>
     )
   }
