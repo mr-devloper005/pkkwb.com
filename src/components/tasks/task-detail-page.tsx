@@ -18,6 +18,7 @@ import { RichContent, formatRichHtml } from "@/components/shared/rich-content";
 import { getFactoryState } from "@/design/factory/get-factory-state";
 import { getProductKind } from "@/design/factory/get-product-kind";
 import { DirectoryTaskDetailPage } from "@/design/products/directory/task-detail-page";
+import { SBMCardDetail } from "@/components/shared/sbm-card-detail";
 import { TASK_DETAIL_PAGE_OVERRIDE_ENABLED, TaskDetailPageOverride } from "@/overrides/task-detail-page";
 
 type PostContent = {
@@ -226,6 +227,22 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   const schemaPayload = articleSchema ? [articleSchema, breadcrumbSchema] : breadcrumbSchema;
   const { recipe } = getFactoryState();
   const productKind = getProductKind(recipe);
+
+  if (task === "sbm" || task === "social") {
+    return (
+      <div>
+        <NavbarShell />
+        <SBMCardDetail
+          task={task}
+          taskLabel={taskConfig?.label || task}
+          taskRoute={taskConfig?.route || "/"}
+          post={post}
+          related={related}
+        />
+        <Footer />
+      </div>
+    );
+  }
 
   if (productKind === "directory" && (task === "listing" || task === "classified" || task === "profile")) {
     return (
