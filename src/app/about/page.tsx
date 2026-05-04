@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { ArrowRight, Heart, Target, Users } from 'lucide-react'
 import { NexuzPageShell, NexuzPanel } from '@/components/nexuz/nexuz-page-shell'
 import { Button } from '@/components/ui/button'
-import { mockTeamMembers } from '@/data/mock-data'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { buildPageMetadata } from '@/lib/seo'
 
@@ -128,26 +127,6 @@ export default function AboutPage() {
         </div>
       </NexuzPanel>
 
-      <h2 className="mt-14 text-center text-2xl font-bold text-[#122520]">People you may already know from the product</h2>
-      <p className="mt-2 text-center text-sm text-[#3d5a50]">A few friendly faces we highlight on this marketing site—our full roster is larger.</p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <NexuzPanel key={member.id} className="!p-5">
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 overflow-hidden rounded-full border border-[#c8e8dc]">
-                <img src={member.avatar} alt="" className="h-full w-full object-cover" width="48" height="48" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-[#122520]">{member.name}</p>
-                <p className="text-xs text-[#5a7a6f]">{member.role}</p>
-              </div>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-[#3d5a50]">{member.bio}</p>
-            <p className="mt-2 text-xs text-[#5a7a6f]">{member.location}</p>
-          </NexuzPanel>
-        ))}
-      </div>
-
       <NexuzPanel variant="mintCta" className="mt-12 text-center !py-10">
         <h3 className="text-2xl font-bold text-[#0f2320]">Work with {SITE_CONFIG.name}?</h3>
         <p className="mx-auto mt-2 max-w-lg text-sm text-[#1a3d36]">We are hiring curious designers and engineers. Tell us what you are building in your own words.</p>
@@ -157,9 +136,6 @@ export default function AboutPage() {
               View open roles
               <ArrowRight className="h-4 w-4" />
             </Link>
-          </Button>
-          <Button variant="ghost" asChild className="rounded-full text-[#0f2320] hover:bg-white/50">
-            <Link href="/team">Meet the full team</Link>
           </Button>
         </div>
       </NexuzPanel>

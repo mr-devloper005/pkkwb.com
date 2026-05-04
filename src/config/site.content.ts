@@ -2,13 +2,13 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Profiles & social bookmarking',
+    tagline: '',
   },
   footer: {
     tagline: 'Profiles & social bookmarking',
   },
   hero: {
-    badge: 'Profiles & shared shelves',
+    badge: '',
     title: ['A thoughtful home for', 'people and the links they trust.'],
     description: 'Public profiles, named bookmark collections, and a calmer way to return to the resources you care about.',
     primaryCta: {

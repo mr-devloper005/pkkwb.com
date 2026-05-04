@@ -148,9 +148,20 @@ export default function ContactPage() {
                   Send message
                 </Button>
               </form>
+              <div className="mt-6">
+                <Button asChild className="w-full rounded-full bg-[#1a3531] text-white hover:bg-[#0f2320]">
+                  <a href={`mailto:${process.env.CONTACT_EMAIL || 'support@pkkwb.com'}`}>
+                    <Mail className="mr-2 h-4 w-4" />
+                    Email us directly
+                  </a>
+                </Button>
+              </div>
               <p className="mt-4 flex items-center gap-2 text-xs text-[#5a7a6f]">
                 <Mail className="h-3.5 w-3.5" />
-                You can also reach the team the old-fashioned way through your own mail client; this page is for framing the right context.
+                You can also email us directly at: 
+                <a href={`mailto:${process.env.CONTACT_EMAIL || 'support@pkkwb.com'}`} className="font-semibold text-[#1a2825] hover:underline">
+                  {process.env.CONTACT_EMAIL || 'support@pkkwb.com'}
+                </a>
               </p>
             </div>
           </div>
