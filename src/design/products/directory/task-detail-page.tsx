@@ -1,10 +1,14 @@
+"use client"
+
 import Link from 'next/link'
-import { ArrowRight, Globe, Mail, MapPin, Phone, ShieldCheck, Tag } from 'lucide-react'
+import { ArrowRight, Globe, Mail, MapPin, Phone, ShieldCheck, Tag, Share2, Plus, Presentation, ChevronDown, ChevronRight, Archive, Tag as TagIcon, Flag, User, MessageCircle, Repeat2, Heart, MoreHorizontal } from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { TaskPostCard } from '@/components/shared/task-post-card'
+import { Button } from '@/components/ui/button'
 import type { SitePost } from '@/lib/site-connector'
 import type { TaskKey } from '@/lib/site-config'
+import { useState } from 'react'
 
 export function DirectoryTaskDetailPage({
   task,
@@ -45,110 +49,278 @@ export function DirectoryTaskDetailPage({
     email: email || undefined,
   }
 
+  const [liked, setLiked] = useState(false)
+  const [shared, setShared] = useState(false)
+  const [bookmarked, setBookmarked] = useState(false)
+  const [imageIndex, setImageIndex] = useState(0)
+
   return (
-    <div className="min-h-screen bg-[#f8fbff] text-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <SchemaJsonLd data={schemaPayload} />
-      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <Link href={taskRoute} className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-950">
+      
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+      </div>
+      
+      <main className="relative z-10 mx-auto max-w-2xl px-4 py-8">
+        <Link href={taskRoute} className="mb-6 inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-all hover:translate-x-1">
           ← Back to {taskLabel}
         </Link>
 
-        <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-start">
-          <div>
-            <div className="overflow-hidden rounded-[2.2rem] border border-slate-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
-              <div className="relative h-[420px] overflow-hidden bg-slate-100">
-                <ContentImage src={images[0]} alt={post.title} fill className="object-cover" />
+        {/* Main Card with Unique Design */}
+        <div className="relative group">
+          {/* Glow Effect */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+          
+          {/* Card Container */}
+          <div className="relative bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden backdrop-blur-sm">
+            {/* Unique Header with Gradient */}
+            <div className="relative p-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
+              {/* Pattern Overlay */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+                }}></div>
               </div>
-              {images.length > 1 ? (
-                <div className="grid grid-cols-4 gap-3 p-4">
-                  {images.slice(1, 5).map((image) => (
-                    <div key={image} className="relative h-24 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-                      <ContentImage src={image} alt={post.title} fill className="object-cover" />
+              
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  {/* Animated Logo */}
+                  <div className="relative">
+                    <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                      <span className="text-white font-bold text-lg animate-pulse">F</span>
                     </div>
-                  ))}
+                    <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-lg">Fundtec Services</h3>
+                    <p className="text-blue-100 text-sm">Verified Company</p>
+                  </div>
                 </div>
-              ) : null}
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setBookmarked(!bookmarked)}
+                    className="p-2 hover:bg-white/20 rounded-full transition-all hover:scale-110"
+                  >
+                    <svg className={`h-5 w-5 ${bookmarked ? 'text-yellow-300 fill-yellow-300' : 'text-white'}`} fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  </button>
+                  <button className="p-2 hover:bg-white/20 rounded-full transition-all hover:scale-110">
+                    <MoreHorizontal className="h-5 w-5 text-white" />
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-8 rounded-[2rem] border border-slate-200 bg-white p-7 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">About this {task}</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Structured details instead of a generic content block.</h2>
-              <p className="mt-4 text-sm leading-8 text-slate-600">{description}</p>
-              {highlights.length ? (
-                <div className="mt-6 grid gap-3 md:grid-cols-2">
-                  {highlights.slice(0, 4).map((item) => (
-                    <div key={item} className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700">
-                      {item}
-                    </div>
-                  ))}
+          {/* Card Content */}
+            <div className="p-6">
+              {/* Unique Title with Badge */}
+              <div className="flex items-start justify-between mb-4">
+                <h1 className="text-2xl font-bold text-gray-900 flex-1">
+                  {post.title}
+                </h1>
+                <div className="px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-semibold rounded-full">
+                  FEATURED
                 </div>
-              ) : null}
+              </div>
+
+              {/* Description with Unique Styling */}
+              <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
+                <p className="text-gray-700 leading-relaxed">
+                  {description}
+                </p>
+                {website && (
+                  <a 
+                    href={website} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline mt-3 font-medium"
+                  >
+                    {post.title}
+                    <ArrowRight className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+
+              {/* Enhanced Image Gallery */}
+              {images.length > 0 && (
+                <div className="mb-6">
+                  <div className="relative group">
+                    <div className="relative h-80 overflow-hidden rounded-2xl bg-gray-100 shadow-inner">
+                      <ContentImage src={images[imageIndex]} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                      
+                      {/* Image Navigation */}
+                      {images.length > 1 && (
+                        <>
+                          <button 
+                            onClick={() => setImageIndex((prev) => (prev - 1 + images.length) % images.length)}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all hover:scale-110"
+                          >
+                            <ChevronRight className="h-4 w-4 rotate-180" />
+                          </button>
+                          <button 
+                            onClick={() => setImageIndex((prev) => (prev + 1) % images.length)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all hover:scale-110"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+                        </>
+                      )}
+                      
+                      {/* Image Counter */}
+                      {images.length > 1 && (
+                        <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
+                          <span className="text-white text-sm font-medium">
+                            {imageIndex + 1} / {images.length}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Thumbnail Strip */}
+                    {images.length > 1 && (
+                      <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
+                        {images.map((image, index) => (
+                          <button
+                            key={image}
+                            onClick={() => setImageIndex(index)}
+                            className={`relative h-16 w-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
+                              index === imageIndex ? 'ring-2 ring-blue-500 ring-offset-2' : 'opacity-60 hover:opacity-100'
+                            }`}
+                          >
+                            <ContentImage src={image} alt={`Thumbnail ${index + 1}`} fill className="object-cover" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Enhanced Contact Information */}
+              {(location || phone || email || website) && (
+                <div className="mb-6 p-5 bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl border border-gray-200 shadow-sm">
+                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="h-2 w-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                    Contact Information
+                  </h3>
+                  <div className="grid gap-3">
+                    {location && (
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
+                        <div className="h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <MapPin className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <span className="text-gray-700 text-sm">{location}</span>
+                      </div>
+                    )}
+                    {phone && (
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
+                        <div className="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
+                          <Phone className="h-4 w-4 text-green-600" />
+                        </div>
+                        <span className="text-gray-700 text-sm">{phone}</span>
+                      </div>
+                    )}
+                    {email && (
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
+                        <div className="h-8 w-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                          <Mail className="h-4 w-4 text-purple-600" />
+                        </div>
+                        <span className="text-gray-700 text-sm">{email}</span>
+                      </div>
+                    )}
+                    {website && (
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
+                        <div className="h-8 w-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                          <Globe className="h-4 w-4 text-indigo-600" />
+                        </div>
+                        <span className="text-gray-700 text-sm">{website}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {website && (
+                    <div className="mt-4">
+                      <a 
+                        href={website} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 text-sm font-semibold text-white hover:from-blue-700 hover:to-purple-700 transition-all hover:scale-105 shadow-lg"
+                      >
+                        Visit website <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Enhanced Highlights */}
+              {highlights.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="h-2 w-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                    Key Highlights
+                  </h3>
+                  <div className="space-y-3">
+                    {highlights.slice(0, 3).map((highlight, index) => (
+                      <div key={highlight} className="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
+                        <div className="h-6 w-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs font-bold">{index + 1}</span>
+                        </div>
+                        <p className="text-gray-700 text-sm leading-relaxed">{highlight}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Enhanced Card Footer - Social Actions */}
+            <div className="px-6 pb-6">
+              <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                <div className="flex items-center gap-2">
+                  <button className="group flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                    <MessageCircle className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-medium">Comment</span>
+                  </button>
+                  <button className="group flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all">
+                    <Repeat2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-medium">Retweet</span>
+                  </button>
+                  <button 
+                    onClick={() => setLiked(!liked)}
+                    className={`group flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                      liked ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-red-50'
+                    }`}
+                  >
+                    <Heart className={`h-5 w-5 group-hover:scale-110 transition-transform ${liked ? 'fill-red-600' : ''}`} />
+                    <span className="text-sm font-medium">Like</span>
+                  </button>
+                </div>
+                <button className="group flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                  <Share2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">Share</span>
+                </button>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="space-y-6">
-            <div className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">{category || taskLabel}</p>
-                  <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em]">{post.title}</h1>
-                </div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white">
-                  <ShieldCheck className="h-3.5 w-3.5" /> Verified
-                </span>
-              </div>
-
-              <div className="mt-6 grid gap-3">
-                {location ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><MapPin className="h-4 w-4" /> {location}</div> : null}
-                {phone ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><Phone className="h-4 w-4" /> {phone}</div> : null}
-                {email ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><Mail className="h-4 w-4" /> {email}</div> : null}
-                {website ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><Globe className="h-4 w-4" /> {website}</div> : null}
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                {website ? <a href={website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Visit website <ArrowRight className="h-4 w-4" /></a> : null}
-                <Link href={taskRoute} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100">Browse more</Link>
-              </div>
-            </div>
-
-            {mapEmbedUrl ? (
-              <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
-                <div className="border-b border-slate-200 px-6 py-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Location</p>
-                </div>
-                <iframe src={mapEmbedUrl} title={`${post.title} map`} className="h-[320px] w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-              </div>
-            ) : null}
-
-            <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Quick trust cues</p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {['Clear contact details', 'Stronger business framing', 'Map and location cues', 'Related surfaces nearby'].map((item) => (
-                  <div key={item} className="rounded-[1.3rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700">{item}</div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {related.length ? (
-          <section className="mt-14">
-            <div className="flex items-end justify-between gap-4 border-b border-slate-200 pb-6">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Related surfaces</p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Keep browsing nearby matches.</h2>
-              </div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
-                <Tag className="h-3.5 w-3.5" /> {taskLabel}
-              </span>
-            </div>
-            <div className="mt-8 grid gap-6 lg:grid-cols-3">
-              {related.map((item) => (
+        {/* Related Listings */}
+        {related.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Related Listings</h2>
+            <div className="space-y-4">
+              {related.slice(0, 3).map((item) => (
                 <TaskPostCard key={item.id} post={item} href={`${taskRoute}/${item.slug}`} taskKey={task} />
               ))}
             </div>
-          </section>
-        ) : null}
+          </div>
+        )}
       </main>
     </div>
   )
