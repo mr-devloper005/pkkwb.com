@@ -8,6 +8,7 @@ import type { SitePost } from '@/lib/site-connector'
 import type { TaskKey } from '@/lib/site-config'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { RichContent, formatRichHtml } from '@/components/shared/rich-content'
 
 type SBMContent = {
   location?: string
@@ -39,17 +40,7 @@ export function SBMCardDetail({
 
   const images = Array.isArray(post.media) ? post.media.map(item => item.url).filter(Boolean) : []
   const mainImage = images[0] || '/placeholder.svg?height=400&width=600'
-
-  // Parse HTML to paragraphs
-  const parseHtmlToParagraphs = (html?: string) => {
-    if (!html) return []
-    return html
-      .replace(/<[^>]*>/g, '')
-      .split(/<\/p>/)
-      .filter(p => p.trim())
-      .map(p => `<p className="text-gray-800 leading-relaxed text-base mb-4">${p}</p>`)
-      .join('')
-  }
+  const descriptionHtml = formatRichHtml(content.description || post.summary || 'Check out this amazing bookmark and resource collection.')
 
   const handleLike = () => {
     // Redirect to login page
@@ -111,9 +102,7 @@ export function SBMCardDetail({
 
             {/* Description */}
             <div className="mb-6">
-              <div dangerouslySetInnerHTML={{ 
-                __html: parseHtmlToParagraphs(content.description || post.summary || 'Check out this amazing bookmark and resource collection.')
-              }} />
+              <RichContent html={descriptionHtml} className="text-gray-800 leading-relaxed text-base" />
               {content.website && (
                 <a 
                   href={content.website} 

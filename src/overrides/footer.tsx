@@ -22,7 +22,6 @@ const columns = {
     title: 'Company',
     items: [
       { name: 'About', href: '/about' },
-      { name: 'Team', href: '/team' },
       { name: 'Contact', href: '/contact' },
     ],
   },
@@ -78,7 +77,7 @@ export function FooterOverride() {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-            {(Object.values(columns) as { title: string; items: { name: string; href: string }[] }[]).map((col) => (
+            {(Object.values(columns) as unknown as { title: string; items: { name: string; href: string }[] }[]).map((col) => (
               <div key={col.title}>
                 <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-[#7eb8a4]">
                   {col.title}

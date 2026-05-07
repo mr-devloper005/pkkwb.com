@@ -456,11 +456,7 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts }: { primaryTas
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
           <div className="grid gap-10 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
             <div>
-              <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] ${tone.badge}`}>
-                <Sparkles className="h-3.5 w-3.5" />
-                Public profiles + shared bookmarks
-              </span>
-              <h1 className={`mt-5 max-w-2xl text-4xl font-bold tracking-[-0.04em] sm:text-5xl lg:text-6xl ${tone.title}`}>
+              <h1 className={`mt-0 max-w-2xl text-4xl font-bold tracking-[-0.04em] sm:text-5xl lg:text-6xl ${tone.title}`}>
                 Build your identity and save the web, without the noise of a generic feed.
               </h1>
               <p className={`mt-5 max-w-xl text-base leading-7 sm:text-lg ${tone.muted}`}>

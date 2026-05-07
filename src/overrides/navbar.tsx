@@ -23,7 +23,6 @@ const ctaOutline = 'rounded-full border-2 border-[#1a3531] bg-white text-[#1a353
 const nav = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Profiles', href: '/profile', icon: User },
   { name: 'Bookmarks', href: '/sbm', icon: Bookmark },
   { name: 'Contact', href: '/contact' },
 ] as const
