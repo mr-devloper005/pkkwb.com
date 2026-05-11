@@ -119,9 +119,6 @@ export default async function SearchPage({
         </p>
         <div className="flex flex-wrap gap-2 text-xs font-medium">
           <span className="text-[#5a7a6f]">Quick entry:</span>
-          <Link className="rounded-full border border-[#d4efe6] bg-[#f3faf7] px-2.5 py-1 text-[#1a3531] hover:bg-[#e8f8f0]" href="/profile">
-            Profiles
-          </Link>
           <Link className="rounded-full border border-[#d4efe6] bg-[#f3faf7] px-2.5 py-1 text-[#1a3531] hover:bg-[#e8f8f0]" href="/sbm">
             Bookmarks
           </Link>

@@ -467,9 +467,6 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts }: { primaryTas
                   {primaryTask?.label || 'Start bookmarking'}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold ${tone.actionAlt}`}>
-                  View profiles
-                </Link>
               </div>
             </div>
             <div className="relative min-h-[280px] sm:min-h-[360px]">

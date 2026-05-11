@@ -61,20 +61,6 @@ export function FooterOverride() {
             <p className="mt-5 max-w-sm text-sm leading-7 text-white/75">
               {SITE_CONFIG.description}
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {social.map((s) => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/80 transition-colors hover:border-white/40 hover:bg-white/10 hover:text-white"
-                >
-                  <s.icon className="h-4 w-4" />
-                  <span className="sr-only">{s.name}</span>
-                </a>
-              ))}
-            </div>
           </div>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {(Object.values(columns) as unknown as { title: string; items: { name: string; href: string }[] }[]).map((col) => (
