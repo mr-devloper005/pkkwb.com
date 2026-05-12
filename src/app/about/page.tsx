@@ -7,9 +7,9 @@ import { SITE_CONFIG } from '@/lib/site-config'
 import { buildPageMetadata } from '@/lib/seo'
 
 const highlights = [
-  { label: 'Public profiles', value: '2.1k+' },
   { label: 'Links saved in collections', value: '18k' },
   { label: 'Shared shelves each month', value: '640+' },
+  { label: 'Active readers', value: '2.1k+' },
 ]
 
 const values = [
@@ -20,7 +20,7 @@ const values = [
 
 const milestones = [
   { y: '2022', t: 'Prototype' },
-  { y: '2023', t: 'Open profiles' },
+  { y: '2023', t: 'Open identities' },
   { y: '2024', t: 'Shared bookmarking' },
   { y: '2025', t: 'Studio launch' },
   { y: '2026', t: 'Today' },
@@ -29,8 +29,8 @@ const milestones = [
 export async function generateMetadata(): Promise<Metadata> {
   return buildPageMetadata({
     path: '/about',
-    title: `About ${SITE_CONFIG.name} — profiles & bookmarking`,
-    description: `Learn how ${SITE_CONFIG.name} helps teams publish public profiles, save the web, and share calm, readable link collections.`,
+    title: `About ${SITE_CONFIG.name} — bookmarking`,
+    description: `Learn how ${SITE_CONFIG.name} helps you save the web and share calm, readable link collections.`,
     openGraphTitle: `About ${SITE_CONFIG.name}`,
     openGraphDescription: `A platform built for identity pages and social bookmarking—less noise, more context.`,
   })
@@ -41,7 +41,7 @@ export default function AboutPage() {
     <NexuzPageShell
       eyebrow="Company"
       title={`A small team building a calmer way to be seen on the web`}
-      description={`${SITE_CONFIG.name} is focused on just two things: a profile that shows who you are, and shelves that show what you read and recommend—without a noisy, everything-at-once feed.`}
+      description={`${SITE_CONFIG.name} is focused on shelves that show what you read and recommend—without a noisy, everything-at-once feed.`}
       actions={
         <>
           <Button asChild className="rounded-full bg-[#1a3531] px-5 text-white hover:bg-[#0f2320]">
@@ -120,7 +120,6 @@ export default function AboutPage() {
               key={m.y + m.t}
               className="inline-flex items-center gap-2 rounded-full border border-[#c4bdd8] bg-white/80 px-3 py-1.5 text-xs text-[#2d3250]"
             >
-              <span className="font-bold text-[#1a3531]">{m.y}</span>
               {m.t}
             </span>
           ))}
