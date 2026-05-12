@@ -13,9 +13,9 @@ const services = [
 ] as const
 
 const incidents = [
-  { range: 'Apr 18, 12:00–12:18 UTC', title: 'Slightly slower first paint on iOS Safari', res: 'Mitigated' },
-  { range: 'Apr 2, 08:40–09:05 UTC', title: 'Bookmark submission queue retried a small batch', res: 'Resolved' },
-  { range: 'Mar 14, 22:10–22:35 UTC', title: 'Planned search index re-shard for larger tenants', res: 'Completed' },
+  { title: 'Slightly slower first paint on iOS Safari', res: 'Mitigated' },
+  { title: 'Bookmark submission queue retried a small batch', res: 'Resolved' },
+  { title: 'Planned search index re-shard for larger tenants', res: 'Completed' },
 ] as const
 
 const upcoming = 'Next maintenance: May 3, 02:00–03:00 UTC — read-only for admin exports only. Public profiles and shelves stay up.'
@@ -95,10 +95,7 @@ export default function StatusPage() {
         <div className="mt-4 space-y-3">
           {incidents.map((i) => (
             <div key={i.title} className="flex flex-col gap-1 border-b border-[#eef6f1] pb-3 last:border-0 sm:flex-row sm:items-baseline sm:justify-between">
-              <div>
-                <p className="text-sm font-bold text-[#122520]">{i.title}</p>
-                <p className="text-xs text-[#5a7a6f]">{i.range}</p>
-              </div>
+              <p className="text-sm font-bold text-[#122520]">{i.title}</p>
               <p className="text-xs font-semibold uppercase text-emerald-800">{i.res}</p>
             </div>
           ))}

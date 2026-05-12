@@ -206,10 +206,6 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                   Public profiles here are built like small landing pages: a clear headshot, a short story, and outbound links that match what someone actually works on.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href="/create/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ${ui.button}`}>
-                    <Plus className="h-4 w-4" />
-                    Create profile
-                  </Link>
                   <Link href="/sbm" className="inline-flex items-center gap-2 rounded-full border-2 border-[#1a3531]/20 bg-white px-5 py-2.5 text-sm font-semibold text-[#1a2825] hover:bg-[#e8f8f0]">
                     See bookmarking <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -298,9 +294,6 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                 <Link href="/create/sbm" className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ${ui.button}`}>
                   <Plus className="h-4 w-4" />
                   Create social bookmarking
-                </Link>
-                <Link href="/profile" className="inline-flex items-center gap-2 rounded-full border-2 border-[#1a3531]/20 bg-white px-5 py-2.5 text-sm font-semibold text-[#1a2825] hover:bg-[#e8f8f0]">
-                  Meet profiles <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/search"

@@ -1,7 +1,9 @@
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const isProd = process.env.NODE_ENV === "production";
 
 /** @type {import('next').NextConfig} */
@@ -9,6 +11,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 7,
@@ -17,9 +20,12 @@ const nextConfig = {
       { protocol: "http", hostname: "**" },
     ],
   },
+
+  // Stronger Turbopack root fix
   turbopack: {
-    root: __dirname,
+    root: path.resolve(__dirname),   // More reliable way
   },
+
   async headers() {
     return [
       {
@@ -32,23 +38,22 @@ const nextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
           {
             key: "Content-Security-Policy",
-            value:
-              [
-                "default-src 'self'",
-                "img-src 'self' data: blob: https: http:",
-                `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com${isProd ? "" : " https://vercel.live"}`,
-                "style-src 'self' 'unsafe-inline'",
-                "connect-src 'self' https: http: wss:",
-                "frame-src 'self' https://www.google.com https://www.google.com/maps https://maps.google.com https://api.seoparadox.com https://www.openstreetmap.org https://openstreetmap.org",
-                "frame-ancestors 'self'",
-                "base-uri 'self'",
-                "form-action 'self'",
-              ].join("; "),
+            value: [
+              "default-src 'self'",
+              "img-src 'self' data: blob: https: http:",
+              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com${isProd ? "" : " https://vercel.live"}`,
+              "style-src 'self' 'unsafe-inline'",
+              "connect-src 'self' https: http: wss:",
+              "frame-src 'self' https://www.google.com https://www.google.com/maps https://maps.google.com https://api.seoparadox.com https://www.openstreetmap.org https://openstreetmap.org",
+              "frame-ancestors 'self'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join("; "),
           },
         ],
       },
     ];
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
